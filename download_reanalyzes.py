@@ -1,12 +1,14 @@
 #pa
 import os
 import cdsapi
+import numpy as np
 
 lagringspath = '/uio/lagringshotell/geofag/students/metos/stinsage/era5_files/'
 
 def download_single_layer_file(var, years_subset):
     c = cdsapi.Client()
     filename = lagringspath + "{}_ERA5_{}0401-{}0930.nc".format(var, years_subset[0], years_subset[-1])
+    #filename = 'dummy_filename.nc'
     c.retrieve(
         'reanalysis-era5-single-levels',
         {   'product_type':'reanalysis',
@@ -102,16 +104,11 @@ if __name__ == "__main__":
 		         '2011','2012','2013','2014','2015', 
 			 '2016', '2017', '2018']
 
-	size_ = len(years) 
 	splits = 2
-	split_size = int(size_/splits)
+	y_lop = np.split(np.array(years), splits)
 
 	for var in variables_single_layer:
-		for i in range(split_size):
-			if i == split_size -1:
-				download_single_layer_file(var, years[i :])
-			else:
-			    print(i, i+splits)
-			    download_single_layer_file(var, years[i: i+split_size])
+		for subset in y_lop:
+			download_single_layer_file(var, subset.tolist())
 		
 		
