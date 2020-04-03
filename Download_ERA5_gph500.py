@@ -49,13 +49,13 @@ def download_single_layer_file(var, years_subset):
         filename)
 def download_pressure_layer_file(var, level, years_subset):
     c = cdsapi.Client()
-    filename = lagringspath + "{}_ERA5_{}0401-{}0930.nc".format(var, years_subset[0], years_subset[-1])
+    filename = lagringspath + "{}_ERA5_d2_{}0401-{}0930.nc".format(var, years_subset[0], years_subset[-1])
     c.retrieve(
         'reanalysis-era5-pressure-levels',
         {
 
             'product_type':'reanalysis',
-            'area'    : '90/-25/20/45', # North, West, South, East. Default: global
+            'area'    : '90/-60/20/-25', # North, West, South, East. Default: global
             'grid'    : '0.25/0.25', # Latitude/longitude grid: east-west (longitude) and north-south resolution (latitude). Default: reduced Gaussian grid
             'format':'netcdf',
             'pressure_level':level,
@@ -99,7 +99,10 @@ if __name__ == "__main__":
 	level = 500
 
 
-	years = '2018'
+	years = ['1981','1982','1983','1984','1985','1986','1987','1988','1989',
+                '1990', '1991','1992','1993','1994','1995','1996','1997','1998',
+                '1999','2000','2001','2002','2003','2004','2005','2006','2007',
+                '2008','2009','2010','2017','2018']
 
 	splits = 2
 	y_lop = np.array_split(np.array(years), splits)
